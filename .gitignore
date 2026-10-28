@@ -1,0 +1,21 @@
+
+# Archivos generados por .NET
+**/bin/
+**/obj/
+
+# Configuración local y secretos
+**/appsettings.Local.json
+**/appsettings.Development.json
+.env
+.env.*
+
+# Archivos de Visual Studio y VS Code específicos del usuario
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
