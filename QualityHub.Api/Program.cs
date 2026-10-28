@@ -1,12 +1,12 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Registrar servicios de OpenAPI.
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Publicar el documento OpenAPI en desarrollo.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -14,28 +14,45 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+// Datos temporales de ejemplo para QualityHub.
+var testCases = new[]
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    new TestCase(
+        "TC-001",
+        "Inicio de sesión correcto",
+        "High",
+        "El usuario accede con credenciales válidas."
+    ),
+    new TestCase(
+        "TC-002",
+        "Contraseña incorrecta",
+        "High",
+        "Se muestra un mensaje de error y se deniega el acceso."
+    ),
+    new TestCase(
+        "TC-003",
+        "Campo de usuario vacío",
+        "Medium",
+        "Se solicita al usuario que introduzca su nombre de usuario."
+    )
 };
 
-app.MapGet("/weatherforecast", () =>
+// GET /api/testcases: obtener todos los casos de prueba.
+app.MapGet("/api/testcases", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return Results.Ok(testCases);
 })
-.WithName("GetWeatherForecast");
+.WithName("GetTestCases")
+.WithTags("Test Cases");
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// Modelo que representa un caso de prueba.
+record TestCase(
+    string Id,
+    string Title,
+    string Priority,
+    string ExpectedResult
+);
+
+public partial class Program { } 

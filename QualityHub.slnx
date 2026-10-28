@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="QualityHub.Api/QualityHub.Api.csproj" />
+  <Project Path="QualityHub.Tests/QualityHub.Tests.csproj" />
+</Solution>
